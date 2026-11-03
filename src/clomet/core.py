@@ -18,17 +18,19 @@ from scipy.spatial.distance import squareform
 
 
 def leiden_scan(clones, n_pcs=40, n_neighbors=25, metric='cosine', resolutions=np.round(np.arange(0.2, 3.2, 0.1), 10),
-                min_k=5, seed=0):
-    """log1p -> PCA -> kNN -> Leiden at each resolution. Returns the AnnData (one leiden_<r> column per resolution),
-    the scan table (k, silhouette, NMI to the previous resolution) and the partitions used (best silhouette per k)."""
-    adata = sc.AnnData(np.log1p(clones.fillna(0).values), obs=clones.index.to_frame(name='clone_id'))
+                min_k=5, seed=0, log1p=True):
+    """log1p (optional) -> PCA -> kNN -> Leiden at each resolution. Returns the AnnData (one leiden_<r> column per
+    resolution), the scan table (k, silhouette, NMI to the previous resolution) and the partitions used (best silhouette
+    per k)."""
+    x = clones.fillna(0).values.astype(float)
+    adata = sc.AnnData(np.log1p(x) if log1p else x, obs=clones.index.to_frame(name='clone_id'))
     sc.tl.pca(adata, n_comps=n_pcs, random_state=seed)
     sc.pp.neighbors(adata, n_neighbors=n_neighbors, metric=metric)
 
     rows, prev = [], None
     for r in resolutions:
         key = f'leiden_{r:.2f}'
-        sc.tl.leiden(adata, resolution=r, key_added=key, random_state=seed)
+        sc.tl.leiden(adata, resolution=r, key_added=key, random_state=seed, flavor='leidenalg')
         lab = adata.obs[key].astype(int).to_numpy()
         k = np.unique(lab).size
         rows.append(dict(resolution=r, k=k,
@@ -134,7 +136,8 @@ def split_clusters(clusters, coassoc, split_ids, max_k=15, min_balance=0.15):
 
 def assign(clones, k, split_ids=(), k_range=range(4, 21, 2), **scan_kw):
     """The whole pipeline: `clones` is a clones x features table of counts, `k` the tree cut, `split_ids` the
-    clusters of that cut to split in two, `k_range` the cuts to compare. Returns a namespace with adata, scan, used, coassoc, tree, cuts, k_summary, ari,
+    clusters of that cut to split in two, `k_range` the cuts to compare; other keywords (n_pcs, n_neighbors, metric,
+    resolutions, min_k, seed, log1p) go to leiden_scan. Returns a namespace with adata, scan, used, coassoc, tree, cuts, k_summary, ari,
     clusters (tree cut at k), meta_clone (after the splits), renumber, splits and split_details."""
     k_range = list(k_range)
     adata, scan, used = leiden_scan(clones, **scan_kw)

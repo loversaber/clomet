@@ -10,16 +10,15 @@ output.
 A clone is described by its cell counts in a set of features, for example `timepoint_celltype` columns
 (`D3_HSC1`, `D10_Monocyte`, …). clomet groups clones with similar output into meta-clones:
 
-1. **Leiden scan:** log1p of the counts → PCA → k-nearest-neighbour graph → Leiden at many resolutions (0.2–3.1 by
-   default). Resolutions that give the same number of clusters are reduced to the one with the best silhouette.
+1. **Leiden scan:** log1p of the counts (optional) → PCA → k-nearest-neighbour graph → Leiden at many resolutions
+   (0.2–3.1 by default). Resolutions that give the same number of clusters are reduced to the one with the best silhouette.
+   (CLADES, Gao, Barile et al., Nat Commun 2025, defined meta-clones with Leiden at a single resolution.)
 2. **Consensus matrix:** for each pair of clones, the fraction of these partitions in which they share a cluster.
 3. **Tree:** average-linkage tree on 1 − consensus, cut into `k` clusters. Cuts over a range of `k` are compared
    (cluster sizes, adjusted Rand index, Sankey of how clones move between cuts) to choose `k`.
 4. **Splits (optional):** chosen clusters are split in two, using the best split of their own consensus tree
    (score = separation × √balance).
 5. The final groups are numbered 1…n: these are the meta-clones.
-
-The method follows Gao, Barile et al. (Nat Commun 2025).
 
 ## Install
 
@@ -77,7 +76,27 @@ Each step is also a function of its own (`leiden_scan`, `consensus`, `cut_tree`,
 | `n_pcs`, `n_neighbors`, `metric` | 40, 25, `'cosine'` | PCA and neighbour graph |
 | `resolutions` | 0.2–3.1 by 0.1 | Leiden resolutions |
 | `min_k` | 5 | smallest number of clusters for a partition to enter the consensus |
+| `log1p` | `True` | take log1p of the counts first; `False` clusters the counts as given |
 | `seed` | 0 | random seed for PCA and Leiden |
+
+## Choosing k
+
+A single Leiden run gives one partition at one resolution. clomet instead gives a tree of the clones that can be cut
+at any k, and shows how the cuts compare, so that k can be chosen and justified:
+
+- cluster sizes and how uneven they are (`clomet.pl.choose_k`),
+- agreement between cuts (`clomet.pl.cut_ari`),
+- how clones move between clusters from one cut to the next (`clomet.pl.sankey`),
+- the consensus matrix coloured by the clusters of each cut (`clomet.pl.cut_clustermaps`).
+
+Clusters that still mix two kinds of output can then be split in two (`split_ids`; check with `clomet.pl.split`).
+
+## Example
+
+`examples/cord_blood_clades.ipynb` tests clomet on the cord blood LARRY data published with CLADES (Gao, Barile et
+al., Nat Commun 2025): 606 clones, 12 CLADES meta-clones. With the same input as CLADES (raw counts, Euclidean
+distance, 15 neighbours; `log1p=False`), clomet's tree cut at k = 12 agrees with the CLADES meta-clones (adjusted
+Rand index 0.86).
 
 ## Tests
 
