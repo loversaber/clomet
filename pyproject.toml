@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clomet"
+version = "0.1.0"
+description = "CLOnes to METa-clones: consensus clustering of lineage-traced clones by their cell-type output"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Qi Liu", email = "lq2021cambridge@gmail.com" }]
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "scikit-learn",
+    "scanpy",
+    "leidenalg",
+    "igraph",
+    "matplotlib",
+    "seaborn",
+]
+
+[project.optional-dependencies]
+sankey = ["plotly", "kaleido"]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
