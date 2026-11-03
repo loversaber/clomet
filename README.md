@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo/clomet_logo_text_light.svg" alt="clomet: CLOnes to METa-clones. Scissors cut a consensus tree into three meta-clones" width="460">
+  <img src="docs/logo/clomet_logo_text_light.svg" alt="clomet: CLOnes to METa-clones. Scissors cut a consensus tree into three meta-clones" width="560">
 </p>
 
 # clomet
