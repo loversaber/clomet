@@ -28,6 +28,10 @@ cd clomet
 pip install -e .            # add [sankey] for the Sankey plot, [test] for the tests
 ```
 
+The meta-clones depend on the versions of scanpy and leidenalg (a newer Leiden implementation can give different
+partitions). clomet 0.1.0 was tested with Python 3.11, scanpy 1.11.1, leidenalg 0.10.2, igraph 0.11 and
+scikit-learn 1.7.2; record the versions you use with your results.
+
 ## Use
 
 ```python
@@ -115,3 +119,7 @@ of the HDBI LARRY paper; it needs the (unpublished) data and is skipped without 
 ## Citation
 
 Paper in preparation.
+
+## Licence
+
+MIT (see `LICENSE`).

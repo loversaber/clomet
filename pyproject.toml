@@ -9,6 +9,7 @@ description = "CLOnes to METa-clones: consensus clustering of lineage-traced clo
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [{ name = "Qi Liu", email = "lq2021cambridge@gmail.com" }]
+license = { text = "MIT" }
 dependencies = [
     "numpy",
     "pandas",
