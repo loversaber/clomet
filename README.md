@@ -93,10 +93,15 @@ Clusters that still mix two kinds of output can then be split in two (`split_ids
 
 ## Example
 
-`examples/cord_blood_clades.ipynb` tests clomet on the cord blood LARRY data published with CLADES (Gao, Barile et
-al., Nat Commun 2025): 606 clones, 12 CLADES meta-clones. With the same input as CLADES (raw counts, Euclidean
-distance, 15 neighbours; `log1p=False`), clomet's tree cut at k = 12 agrees with the CLADES meta-clones (adjusted
-Rand index 0.86).
+`examples/cord_blood_clades.ipynb` runs clomet on the human cord blood LARRY data published with CLADES (Gao, Barile et
+al., Nat Commun 2025; data: figshare https://doi.org/10.6084/m9.figshare.27908142, CC BY 4.0). Its input, 606 clones x
+31 timepoint_celltype columns and the 12 CLADES meta-clones, is in `inputs/cord_blood_clades/`, so the example runs
+without downloading anything.
+
+1. With the same input as CLADES (raw counts, Euclidean distance, 15 neighbours; `log1p=False`), clomet's tree cut at
+   k = 12 agrees with the CLADES meta-clones (adjusted Rand index 0.86).
+2. With clomet's default input (log1p, cosine distance), the example chooses k, defines new meta-clones (k = 14) and
+   shows them as a clone UMAP and a clone heatmap next to the CLADES meta-clones.
 
 ## Tests
 
