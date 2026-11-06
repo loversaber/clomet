@@ -123,3 +123,7 @@ Paper in preparation.
 ## Licence
 
 MIT (see `LICENSE`).
+
+## Contact
+
+Qi Liu (lq2021cambridge@gmail.com). Questions and bug reports: https://github.com/loversaber/clomet/issues
