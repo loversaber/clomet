@@ -5,3 +5,4 @@ __pycache__/
 *.parquet
 *.h5ad
 *.pkl
+archive/

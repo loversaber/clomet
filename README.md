@@ -8,7 +8,7 @@
 output.
 
 A clone is described by its cell counts in a set of features, for example `timepoint_celltype` columns
-(`D3_HSC1`, `D10_Monocyte`, …). clomet groups clones with similar output into meta-clones:
+(`Day3_HSC`, `Day10_Monocyte`, …). clomet groups clones with similar output into meta-clones:
 
 1. **Leiden scan:** log1p of the counts (optional) → PCA → k-nearest-neighbour graph → Leiden at many resolutions
    (0.2–3.1 by default). Resolutions that give the same number of clusters are reduced to the one with the best silhouette.
@@ -113,8 +113,7 @@ without downloading anything.
 pytest tests
 ```
 
-`test_small_example` runs on simulated clones. `test_paper_metaclones` checks that clomet reproduces the 19 meta-clones
-of the HDBI LARRY paper; it needs the (unpublished) data and is skipped without it.
+The tests run clomet on simulated clones.
 
 ## Citation
 
